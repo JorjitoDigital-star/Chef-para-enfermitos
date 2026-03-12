@@ -94,7 +94,7 @@ for message in st.session_state.messages:
 
 # Saludo inicial (Breve, encantador y humano)
 if len(st.session_state.messages) == 0:
-    saludo_inicial = "¡Hola! Soy **Tu Chefcito** 👨‍🍳✨\n\nEstoy aquí para cuidarte con mucho cariño y buen sabor. Cuéntame tu país, cuántos son y qué debemos cuidar, ¡y verás qué rico te asisto!"
+    saludo_inicial = "¡Hola! Soy **Tu Chefcito** 👨‍🍳✨\n\nEstoy aquí para cuidarte con mucho cariño y buen sabor. Cuéntame, de qué país eres, cuántos son y qué enfermedad tienes, ¡y verás qué rico te asisto!"
     st.session_state.messages.append({"role": "assistant", "content": saludo_inicial})
     with st.chat_message("assistant"):
         st.markdown(saludo_inicial)
