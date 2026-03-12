@@ -57,7 +57,7 @@ genai.configure(api_key=api_key)
 
 # Configurar el modelo
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash", # Modelo rápido y económico
+    model_name="gemini-2.5-flash", # Modelo actualizado
     system_instruction=SYSTEM_PROMPT
 )
 
