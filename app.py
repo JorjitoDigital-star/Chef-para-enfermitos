@@ -8,15 +8,15 @@ st.set_page_config(page_title="Mi Chefcito", page_icon="👨‍🍳")
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# --- DEFINICIÓN DE LA PERSONALIDAD ---
+# --- DEFINICIÓN DE LA PERSONALIDAD (ACTUALIZADO) ---
 SYSTEM_PROMPT = """
 Eres "Mi Chefcito", un chef amable, divertido y experto en cocina saludable.
 Tu objetivo es crear recetas para personas con Diabetes, Gastritis, Tuberculosis o Cáncer.
 
 REGLAS DE ORO:
 1. SALUDO: Saluda una sola vez al inicio de forma alegre y directa.
-2. INTERACCIÓN: Primero pregunta sutilmente por la enfermedad, luego el país y los comensales. Finalmente pregunta por los ingredientes.
-3. INGREDIENTES: Tu prioridad absoluta es usar "lo que haya en la refri". Si dicen que no tienen nada, sugiere una lista de compras corta y económica.
+2. INTERACCIÓN: Primero pregunta sutilmente por la enfermedad, luego el país y los comensales.
+3. INGREDIENTES: Dado que cocinamos para condiciones de salud delicadas, prioriza ingredientes frescos y adecuados. Ofrece al usuario una lista de compras específica y saludable para su condición (no improvises con cualquier cosa, asegura la calidad nutricional).
 4. ESTILO: Usa lenguaje sensorial (colores, aromas, texturas). No des respuestas robóticas ni largos testamentos. Sé conciso.
 5. NUTRICIÓN: Aporta valor nutricional de forma concisa.
 6. DESPEDIDA: Si el usuario dice que no necesita más ayuda, despídete con calidez y cercanía.
@@ -70,7 +70,7 @@ for message in st.session_state.messages:
 
 # Saludo inicial
 if len(st.session_state.messages) == 0:
-    saludo_inicial = "¡Hola! Soy **Mi Chefcito**, tu aliado en la cocina para crear platos saludables y deliciosos. ¡Qué gusto tenerte aquí! 👨‍🍳✨\n\nPara empezar, cuéntame:\n1. ¿En qué país te encuentras?\n2. ¿Para cuántas personas cocinamos?\n3. ¿Tienes alguna condición de salud (diabetes, gastritis, etc.) que debamos cuidar?\n4. ¿Qué ingredientes tienes en tu refrigerador?"
+    saludo_inicial = "¡Hola! Soy **Mi Chefcito**, tu aliado en la cocina para crear platos saludables y deliciosos. ¡Qué gusto tenerte aquí! 👨‍🍳✨\n\nPara empezar, cuéntame:\n1. ¿En qué país te encuentras?\n2. ¿Para cuántas personas cocinamos?\n3. ¿Tienes alguna condición de salud (diabetes, gastritis, etc.) que debamos cuidar?\n4. ¿Tienes algún ingrediente en mente o prefieres que te sugiera una lista de compras?"
     st.session_state.messages.append({"role": "assistant", "content": saludo_inicial})
     with st.chat_message("assistant"):
         st.markdown(saludo_inicial)
@@ -88,7 +88,6 @@ if prompt := st.chat_input("Escribe aquí tus ingredientes o respuestas..."):
         
         try:
             # Construir el historial para Google
-            # Google espera formato: [{"role": "user", "parts": ["..."]}, ...]
             history = []
             for m in st.session_state.messages:
                 history.append({
