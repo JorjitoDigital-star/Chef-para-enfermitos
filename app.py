@@ -28,11 +28,22 @@ if "messages" not in st.session_state:
 
 # --- INTERFAZ DE USUARIO ---
 
-# Sidebar para la API Key (Necesaria para que funcione)
+# Intentamos leer la clave de los Secrets primero
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+except:
+    api_key = None
+
 with st.sidebar:
     st.title("🔧 Configuración")
-    st.markdown("Para que **Mi Chefcito** funcione, ingresa tu API Key de OpenAI.")
-    api_key = st.text_input("OpenAI API Key", type="password")
+    # Si encontramos la clave en Secrets, mostramos un mensaje de éxito
+    if api_key:
+        st.success("🔑 ¡Conexión segura activa! (Usando Secrets)")
+    # Si NO encontramos la clave, mostramos el cuadro de texto manual
+    else:
+        st.markdown("Para que **Mi Chefcito** funcione, ingresa tu API Key de OpenAI.")
+        api_key = st.text_input("OpenAI API Key", type="password")
+    
     st.markdown("---")
     st.markdown("Desarrollado con ❤️ para tu salud.")
 
