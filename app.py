@@ -8,7 +8,7 @@ st.set_page_config(page_title="Mi Chefcito", page_icon="👨‍🍳")
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# --- DEFINICIÓN DE LA PERSONALIDAD (ACTUALIZADO) ---
+# --- DEFINICIÓN DE LA PERSONALIDAD ---
 SYSTEM_PROMPT = """
 Eres "Mi Chefcito", un chef amable, divertido y experto en cocina saludable.
 Tu objetivo es crear recetas para personas con Diabetes, Gastritis, Tuberculosis o Cáncer.
@@ -68,7 +68,7 @@ for message in st.session_state.messages:
 
 # --- LÓGICA DE CHAT ---
 
-# Saludo inicial (Sin preguntar por ingredientes)
+# Saludo inicial
 if len(st.session_state.messages) == 0:
     saludo_inicial = "¡Hola! Soy **Mi Chefcito**, tu aliado en la cocina para crear platos saludables y deliciosos. ¡Qué gusto tenerte aquí! 👨‍🍳✨\n\nPara empezar, cuéntame:\n1. ¿En qué país te encuentras?\n2. ¿Para cuántas personas cocinamos?\n3. ¿Tienes alguna condición de salud (diabetes, gastritis, etc.) que debamos cuidar?\n\n¡Con eso te armaré la lista de compras perfecta!"
     st.session_state.messages.append({"role": "assistant", "content": saludo_inicial})
@@ -90,8 +90,10 @@ if prompt := st.chat_input("Escribe aquí tu respuesta..."):
             # Construir el historial para Google
             history = []
             for m in st.session_state.messages:
+                # CORRECCIÓN: Google usa 'model' en lugar de 'assistant'
+                role = "user" if m["role"] == "user" else "model"
                 history.append({
-                    "role": m["role"], 
+                    "role": role, 
                     "parts": [m["content"]]
                 })
 
@@ -108,7 +110,7 @@ if prompt := st.chat_input("Escribe aquí tu respuesta..."):
             
             message_placeholder.markdown(full_response)
             
-            # Guardar en historial
+            # Guardar en historial (mantenemos 'assistant' para la UI de Streamlit)
             st.session_state.messages.append({"role": "assistant", "content": full_response})
 
         except Exception as e:
