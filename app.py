@@ -15,8 +15,8 @@ Tu objetivo es crear recetas para personas con Diabetes, Gastritis, Tuberculosis
 
 REGLAS DE ORO:
 1. SALUDO: Saluda una sola vez al inicio de forma alegre y directa.
-2. INTERACCIÓN: Primero pregunta sutilmente por la enfermedad, luego el país y los comensales.
-3. INGREDIENTES: Dado que cocinamos para condiciones de salud delicadas, prioriza ingredientes frescos y adecuados. Ofrece al usuario una lista de compras específica y saludable para su condición (no improvises con cualquier cosa, asegura la calidad nutricional).
+2. INTERACCIÓN: Pregunta sutilmente por la enfermedad, el país y los comensales.
+3. LISTA DE COMPRAS (Prioridad #1): Dado que cocinamos para condiciones de salud delicadas, NO preguntes qué ingredientes tienen. Una vez tengas los datos básicos, entrega DIRECTAMENTE una "Lista de Compras" específica, fresca y adecuada para la enfermedad del usuario.
 4. ESTILO: Usa lenguaje sensorial (colores, aromas, texturas). No des respuestas robóticas ni largos testamentos. Sé conciso.
 5. NUTRICIÓN: Aporta valor nutricional de forma concisa.
 6. DESPEDIDA: Si el usuario dice que no necesita más ayuda, despídete con calidez y cercanía.
@@ -57,7 +57,7 @@ genai.configure(api_key=api_key)
 
 # Configurar el modelo
 model = genai.GenerativeModel(
-    model_name="gemini-2.5-flash", # Modelo actualizado
+    model_name="gemini-2.5-flash", 
     system_instruction=SYSTEM_PROMPT
 )
 
@@ -68,15 +68,15 @@ for message in st.session_state.messages:
 
 # --- LÓGICA DE CHAT ---
 
-# Saludo inicial
+# Saludo inicial (Sin preguntar por ingredientes)
 if len(st.session_state.messages) == 0:
-    saludo_inicial = "¡Hola! Soy **Mi Chefcito**, tu aliado en la cocina para crear platos saludables y deliciosos. ¡Qué gusto tenerte aquí! 👨‍🍳✨\n\nPara empezar, cuéntame:\n1. ¿En qué país te encuentras?\n2. ¿Para cuántas personas cocinamos?\n3. ¿Tienes alguna condición de salud (diabetes, gastritis, etc.) que debamos cuidar?\n4. ¿Tienes algún ingrediente en mente o prefieres que te sugiera una lista de compras?"
+    saludo_inicial = "¡Hola! Soy **Mi Chefcito**, tu aliado en la cocina para crear platos saludables y deliciosos. ¡Qué gusto tenerte aquí! 👨‍🍳✨\n\nPara empezar, cuéntame:\n1. ¿En qué país te encuentras?\n2. ¿Para cuántas personas cocinamos?\n3. ¿Tienes alguna condición de salud (diabetes, gastritis, etc.) que debamos cuidar?\n\n¡Con eso te armaré la lista de compras perfecta!"
     st.session_state.messages.append({"role": "assistant", "content": saludo_inicial})
     with st.chat_message("assistant"):
         st.markdown(saludo_inicial)
 
 # Captura input
-if prompt := st.chat_input("Escribe aquí tus ingredientes o respuestas..."):
+if prompt := st.chat_input("Escribe aquí tu respuesta..."):
     # Mostrar mensaje usuario
     st.chat_message("user").markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
